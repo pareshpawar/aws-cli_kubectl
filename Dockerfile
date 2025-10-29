@@ -1,8 +1,14 @@
 FROM alpine/git:latest
 
-# Install AWS CLI
-RUN apk add --no-cache python3 py3-pip \
-    && pip3 install awscli
+RUN apk add --no-cache python3 py3-pip
+
+# Create a virtual environment
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Install awscli within the virtual environment
+RUN pip install awscli
 
 # Install kubectl
 RUN apk add --no-cache curl \
